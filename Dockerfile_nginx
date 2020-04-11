@@ -1,0 +1,6 @@
+FROM ubuntu
+MAINTAINER 09nitin@gmail.com
+RUN apt-get update
+RUN apt-get install -y nginx
+# COPY <Replace_this_with_files_to_copy> /var/www/html/
+ENTRYPOINT service nginx start && bash
