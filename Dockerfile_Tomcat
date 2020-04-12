@@ -1,0 +1,32 @@
+#Dockerfile
+
+#base image
+FROM ubuntu
+
+#maintained by
+MAINTAINER 09nitin@gmail.com
+
+#install tools
+RUN apt-get update && \
+    apt-get install -y openjdk-8-jdk && \
+    apt-get -y install curl
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre/
+
+#install create user
+RUN groupadd tomcat
+RUN useradd -m -d /opt/tomcat -g tomcat -s /bin/false tomcat
+
+#install tomcat
+RUN curl -O http://apachemirror.wuchna.com/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz
+RUN tar xzvf apache-tomcat-*.tar.gz -C /opt/tomcat --strip-components=1 && \
+    rm -rf apache-tomcat-*
+
+#copy war to tomcat
+# ****** replace app_war_file with war file name to be deployed to tomcat *******
+#COPY target/<app_war_file> /opt/tomcat/webapps/
+
+#expose port for tomcat server
+EXPOSE 8080
+
+#start tomcat
+ENTRYPOINT ["/opt/tomcat/bin/catalina.sh", "run"] 
